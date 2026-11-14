@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>KPFA – Petition to the Chief Minister | മുഖ്യമന്ത്രിക്കുള്ള നിവേദനം</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f6f4;
+    --card: #ffffff;
+    --text: #1d2a22;
+    --muted: #5b6b61;
+    --line: #cfd8d2;
+    --brand: #1f6b3a;
+    --brand-dark: #17542d;
+    --error: #b3261e;
+    --ok-bg: #e4f4e8;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121815;
+      --card: #1b231e;
+      --text: #e7efe9;
+      --muted: #9fb0a5;
+      --line: #33423a;
+      --brand: #3fa564;
+      --brand-dark: #34905a;
+      --error: #ff8a80;
+      --ok-bg: #1d3a28;
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: 'Noto Sans Malayalam', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px);
+  }
+  .wrap { max-width: 560px; margin: 0 auto; padding: 16px; }
+  header { text-align: center; padding: 8px 4px 16px; }
+  header h1 { font-size: 1.25rem; margin: 0 0 4px; }
+  header p { margin: 0; color: var(--muted); font-size: .92rem; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 16px;
+  }
+  .card h2 { font-size: 1rem; margin: 0 0 8px; }
+  .demands { margin: 0; padding-left: 1.2em; font-size: .93rem; }
+  .demands li { margin-bottom: 8px; }
+  .demands small { display: block; color: var(--muted); }
+  label { display: block; font-weight: 600; margin: 14px 0 6px; font-size: .95rem; }
+  label small { font-weight: 400; color: var(--muted); }
+  input, select, textarea {
+    width: 100%;
+    font: inherit;
+    font-size: 16px; /* prevents iOS zoom on focus */
+    color: var(--text);
+    background: var(--card);
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    padding: 12px;
+  }
+  textarea { min-height: 88px; resize: vertical; }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--brand); border-color: var(--brand); }
+  .invalid { border-color: var(--error) !important; }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  button {
+    width: 100%;
+    margin-top: 22px;
+    font: inherit;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #fff;
+    background: var(--brand);
+    border: 0;
+    border-radius: 12px;
+    padding: 15px;
+    cursor: pointer;
+  }
+  button:hover { background: var(--brand-dark); }
+  button:disabled { opacity: .6; cursor: default; }
+  .msg { margin-top: 14px; padding: 12px 14px; border-radius: 10px; font-size: .95rem; display: none; }
+  .msg.show { display: block; }
+  .msg.ok { background: var(--ok-bg); }
+  .msg.err { color: var(--error); border: 1px solid var(--error); }
+  .signed { margin-top: 8px; font-size: .92rem; color: var(--brand); font-weight: 600; word-break: break-all; }
+  footer { text-align: center; color: var(--muted); font-size: .8rem; padding: 4px 0 20px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>കേരള പോൾട്രി ഫാർമേഴ്സ് അസോസിയേഷൻ</h1>
+    <p>Kerala Poultry Farmers Association (KPFA)</p>
+  </header>
+
+  <section class="card">
+    <h2>മുഖ്യമന്ത്രിക്കുള്ള നിവേദനം · Petition to the Chief Minister</h2>
+    <ol class="demands">
+      <li>ബ്രോയിലർ കോഴി വളർത്തലിനെ കാർഷിക പ്രവർത്തനമായി അംഗീകരിക്കുക
+        <small>Recognise broiler poultry farming as an Agricultural Activity</small></li>
+      <li>ഫാം ഷെഡുകൾക്ക് ലേബർ സെസ്, വൺ ടൈം ടാക്സ് ഒഴിവാക്കുക
+        <small>Exempt farm sheds from Labour Cess and One-Time Tax</small></li>
+      <li>മലിനീകരണ നിയന്ത്രണ ബോർഡിന്റെ 500 മീറ്റർ ദൂരപരിധിയിൽ ഇളവ് നൽകുക
+        <small>Relax the Pollution Control Board's 500-metre distance rule</small></li>
+    </ol>
+  </section>
+
+  <form id="form" class="card" novalidate>
+    <h2>നിങ്ങളുടെ വിവരങ്ങൾ · Your details</h2>
+
+    <label for="name">പേര് <small>/ Name</small></label>
+    <input id="name" name="name" type="text" autocomplete="name" maxlength="80" required>
+
+    <label for="address">വിലാസം <small>/ Address</small></label>
+    <textarea id="address" name="address" autocomplete="street-address" maxlength="250" required></textarea>
+
+    <label for="district">ജില്ല <small>/ District</small></label>
+    <select id="district" name="district" required>
+      <option value="">— തിരഞ്ഞെടുക്കുക / Select —</option>
+    </select>
+
+    <label for="mobile">മൊബൈൽ നമ്പർ <small>/ Mobile Number</small></label>
+    <input id="mobile" name="mobile" type="tel" inputmode="numeric" autocomplete="tel" placeholder="9XXXXXXXXX" maxlength="15" required>
+
+    <div id="emailManual" hidden>
+      <label for="email">ഇമെയിൽ <small>/ Email <span class="optTag">(ഓപ്ഷണൽ / optional)</span></small></label>
+      <input id="email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120">
+    </div>
+
+    <div id="emailGoogle" hidden>
+      <label>ഇമെയിൽ <small>/ Email <span class="optTag">(ഓപ്ഷണൽ / optional)</span></small></label>
+      <div id="gsiButton"></div>
+      <div id="gsiUser" class="signed" hidden></div>
+    </div>
+
+    <div class="hp" aria-hidden="true">
+      <label for="website">Website</label>
+      <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+    </div>
+
+    <button id="send" type="submit">അയയ്ക്കുക · Send</button>
+    <div id="msg" class="msg" role="status" aria-live="polite"></div>
+  </form>
+
+  <footer>നിങ്ങളുടെ വിവരങ്ങൾ കത്തിൽ മാത്രം ഉൾപ്പെടുത്തുന്നു · Your details are included in the letter only.</footer>
+</div>
+
+<script>
+(function () {
+  var DISTRICTS = [
+    ['Thiruvananthapuram', 'തിരുവനന്തപുരം'],
+    ['Kollam', 'കൊല്ലം'],
+    ['Pathanamthitta', 'പത്തനംതിട്ട'],
+    ['Alappuzha', 'ആലപ്പുഴ'],
+    ['Kottayam', 'കോട്ടയം'],
+    ['Idukki', 'ഇടുക്കി'],
+    ['Ernakulam', 'എറണാകുളം'],
+    ['Thrissur', 'തൃശ്ശൂർ'],
+    ['Palakkad', 'പാലക്കാട്'],
+    ['Malappuram', 'മലപ്പുറം'],
+    ['Kozhikode', 'കോഴിക്കോട്'],
+    ['Wayanad', 'വയനാട്'],
+    ['Kannur', 'കണ്ണൂർ'],
+    ['Kasaragod', 'കാസർഗോഡ്']
+  ];
+
+  var form = document.getElementById('form');
+  var select = document.getElementById('district');
+  var btn = document.getElementById('send');
+  var msg = document.getElementById('msg');
+
+  DISTRICTS.forEach(function (d) {
+    var o = document.createElement('option');
+    o.value = d[0];
+    o.textContent = d[1] + ' / ' + d[0];
+    select.appendChild(o);
+  });
+
+  var cfg = { googleClientId: '', requireEmail: false };
+  var credential = '';
+
+  function loadGoogle() {
+    var s = document.createElement('script');
+    s.src = 'https://accounts.google.com/gsi/client';
+    s.async = true;
+    s.onload = function () {
+      google.accounts.id.initialize({ client_id: cfg.googleClientId, callback: onCredential });
+      google.accounts.id.renderButton(document.getElementById('gsiButton'), { theme: 'outline', size: 'large', text: 'signin_with', width: 280 });
+    };
+    document.head.appendChild(s);
+  }
+
+  function onCredential(resp) {
+    credential = resp.credential;
+    var box = document.getElementById('gsiUser');
+    try {
+      var b64 = credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+      box.textContent = '\u2713 ' + JSON.parse(atob(b64)).email;
+    } catch (e) {
+      box.textContent = '\u2713 Signed in';
+    }
+    box.hidden = false;
+    document.getElementById('gsiButton').hidden = true;
+  }
+
+  function resetGoogle() {
+    credential = '';
+    document.getElementById('gsiUser').hidden = true;
+    document.getElementById('gsiButton').hidden = false;
+  }
+
+  function initEmail() {
+    if (cfg.googleClientId) {
+      document.getElementById('emailGoogle').hidden = false;
+      loadGoogle();
+    } else {
+      document.getElementById('emailManual').hidden = false;
+    }
+    if (cfg.requireEmail) {
+      Array.prototype.forEach.call(document.querySelectorAll('.optTag'), function (el) { el.style.display = 'none'; });
+    }
+  }
+
+  fetch('/api/config')
+    .then(function (r) { return r.json(); })
+    .then(function (c) { cfg = c; })
+    .catch(function () {})
+    .then(initEmail);
+
+  function show(type, text) {
+    msg.className = 'msg show ' + type;
+    msg.textContent = text;
+    msg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function cleanMobile(v) {
+    return v.replace(/[\s-]/g, '').replace(/^(\+91|91|0)(?=\d{10}$)/, '');
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    msg.className = 'msg';
+
+    var f = form.elements;
+    var checks = [
+      [f.name, f.name.value.trim().length >= 2, 'പേര് നൽകുക / Please enter your name.'],
+      [f.address, f.address.value.trim().length >= 5, 'വിലാസം നൽകുക / Please enter your address.'],
+      [f.district, !!f.district.value, 'ജില്ല തിരഞ്ഞെടുക്കുക / Please select your district.'],
+      [f.mobile, /^[6-9]\d{9}$/.test(cleanMobile(f.mobile.value)), 'ശരിയായ 10 അക്ക മൊബൈൽ നമ്പർ നൽകുക / Enter a valid 10-digit mobile number.']
+    ];
+    [f.name, f.address, f.district, f.mobile].forEach(function (el) { el.classList.remove('invalid'); });
+    for (var i = 0; i < checks.length; i++) {
+      if (!checks[i][1]) {
+        checks[i][0].classList.add('invalid');
+        checks[i][0].focus();
+        show('err', checks[i][2]);
+        return;
+      }
+    }
+
+    if (cfg.requireEmail && !credential && !(f.email && f.email.value.trim())) {
+      show('err', cfg.googleClientId
+        ? 'Google ഉപയോഗിച്ച് സൈൻ ഇൻ ചെയ്യുക / Please sign in with Google.'
+        : 'ഇമെയിൽ നൽകുക / Please enter your email address.');
+      return;
+    }
+
+    btn.disabled = true;
+    var original = btn.textContent;
+    btn.textContent = 'അയയ്ക്കുന്നു… · Sending…';
+
+    fetch('/api/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: f.name.value,
+        address: f.address.value,
+        district: f.district.value,
+        mobile: f.mobile.value,
+        email: f.email ? f.email.value : '',
+        credential: credential,
+        website: f.website.value
+      })
+    })
+      .then(function (r) {
+        return r.json().catch(function () { return { ok: false }; }).then(function (data) {
+          return { status: r.status, data: data };
+        });
+      })
+      .then(function (res) {
+        if (res.data && res.data.ok) {
+          show('ok', 'നിവേദനം അയച്ചു. നന്ദി! / Your petition has been sent. Thank you!');
+          form.reset();
+        } else {
+          if (res.data && /Google sign-in/.test(res.data.error || '')) resetGoogle();
+          show('err', (res.data && res.data.error) || 'അയയ്ക്കാൻ കഴിഞ്ഞില്ല. വീണ്ടും ശ്രമിക്കുക / Could not send. Please try again.');
+        }
+      })
+      .catch(function () {
+        show('err', 'നെറ്റ്‌വർക്ക് പിശക്. വീണ്ടും ശ്രമിക്കുക / Network error. Please try again.');
+      })
+      .then(function () {
+        btn.disabled = false;
+        btn.textContent = original;
+      });
+  });
+})();
+</script>
+</body>
+</html>

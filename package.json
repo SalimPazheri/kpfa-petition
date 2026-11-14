@@ -1,0 +1,12 @@
+{
+  "name": "kpfa-petition",
+  "version": "1.0.0",
+  "private": true,
+  "description": "KPFA bilingual petition email page",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "nodemailer": "^10.5.0"
+  }
+}
