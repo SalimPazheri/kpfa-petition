@@ -94,6 +94,16 @@
   .msg.ok { background: var(--ok-bg); }
   .msg.err { color: var(--error); border: 1px solid var(--error); }
   .signed { margin-top: 8px; font-size: .92rem; color: var(--brand); font-weight: 600; word-break: break-all; }
+  a.btn { display: block; text-align: center; text-decoration: none; margin-top: 14px; font-weight: 700; font-size: 1.05rem; color: #fff; background: var(--brand); border-radius: 12px; padding: 15px; }
+  a.btn:hover { background: var(--brand-dark); }
+  button.secondary { background: transparent; color: var(--brand); border: 2px solid var(--brand); margin-top: 12px; }
+  button.secondary:hover { background: var(--ok-bg); }
+  .hint { font-size: .93rem; margin: 0 0 4px; }
+  .meta { margin-top: 16px; font-size: .85rem; color: var(--muted); white-space: pre-line; word-break: break-word; }
+  details { margin-top: 14px; }
+  summary { cursor: pointer; font-weight: 600; font-size: .95rem; }
+  pre#preview { white-space: pre-wrap; word-break: break-word; font-family: inherit; font-size: .85rem; max-height: 320px; overflow: auto; border: 1px solid var(--line); border-radius: 10px; padding: 10px; margin: 10px 0 0; }
+  [hidden] { display: none !important; }
   footer { text-align: center; color: var(--muted); font-size: .8rem; padding: 4px 0 20px; }
 </style>
 </head>
@@ -133,31 +143,202 @@
     <label for="mobile">മൊബൈൽ നമ്പർ <small>/ Mobile Number</small></label>
     <input id="mobile" name="mobile" type="tel" inputmode="numeric" autocomplete="tel" placeholder="9XXXXXXXXX" maxlength="15" required>
 
-    <div id="emailManual" hidden>
-      <label for="email">ഇമെയിൽ <small>/ Email <span class="optTag">(ഓപ്ഷണൽ / optional)</span></small></label>
-      <input id="email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120">
-    </div>
+    <label for="email">ഇമെയിൽ <small>/ Email (ഓപ്ഷണൽ / optional – കത്തിൽ ചേർക്കും / shown in the letter)</small></label>
+    <input id="email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120">
 
-    <div id="emailGoogle" hidden>
-      <label>ഇമെയിൽ <small>/ Email <span class="optTag">(ഓപ്ഷണൽ / optional)</span></small></label>
-      <div id="gsiButton"></div>
-      <div id="gsiUser" class="signed" hidden></div>
-    </div>
-
-    <div class="hp" aria-hidden="true">
-      <label for="website">Website</label>
-      <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
-    </div>
-
-    <button id="send" type="submit">അയയ്ക്കുക · Send</button>
+    <button id="prepare" type="submit">ഇമെയിൽ തയ്യാറാക്കുക · Prepare email</button>
     <div id="msg" class="msg" role="status" aria-live="polite"></div>
   </form>
 
-  <footer>നിങ്ങളുടെ വിവരങ്ങൾ കത്തിൽ മാത്രം ഉൾപ്പെടുത്തുന്നു · Your details are included in the letter only.</footer>
+  <section id="result" class="card" hidden>
+    <h2>ഇമെയിൽ തയ്യാർ · Email ready</h2>
+    <p class="hint">താഴെയുള്ള ബട്ടൺ അമർത്തിയാൽ നിങ്ങളുടെ ഇമെയിൽ ആപ്പ് തുറക്കും. അവിടെ <b>Send</b> അമർത്തുക.<br>
+      Tap the button to open your email app, then press <b>Send</b> there. It is sent from your own email address.</p>
+    <a id="openMail" class="btn" href="#">ഇമെയിൽ ആപ്പ് തുറക്കുക · Open email app</a>
+    <button id="copyLetter" type="button" class="secondary">കത്ത് കോപ്പി ചെയ്യുക · Copy letter</button>
+    <div id="meta" class="meta"></div>
+    <details>
+      <summary>കത്ത് കാണുക · Preview letter</summary>
+      <pre id="preview"></pre>
+    </details>
+  </section>
+
+  <footer>നിങ്ങളുടെ ഇമെയിൽ ആപ്പിൽ നിന്ന് നിങ്ങളുടെ സ്വന്തം വിലാസത്തിൽ നിന്ന് അയയ്ക്കുന്നു · Sent from your own email app and address.</footer>
 </div>
 
 <script>
 (function () {
+/*BEGIN_LETTER*/
+var TO = 'chiefminister@kerala.gov.in';
+var CC = ['cmokerala@kerala.gov.in', 'min.ahd@kerala.gov.in', 'min.lsgd@kerala.gov.in'];
+var SUBJECT = "Request for Urgent Government Intervention to Address Serious Challenges Faced by Broiler Poultry Farming Sector in Kerala";
+
+var LETTERS = {
+  en: {
+    "heading": "English",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "to": [
+      "The Hon'ble Chief Minister of Kerala",
+      "Office of the Chief Minister",
+      "North Block, Government Secretariat",
+      "Thiruvananthapuram – 695001"
+    ],
+    "subjectLabel": "Subject",
+    "salutation": "Respected Sir,",
+    "intro": [
+      "Broiler poultry farming is one of the major agricultural allied sectors in Kerala, providing direct and indirect livelihood opportunities to tens of thousands of families and playing a significant role in ensuring the state's food security.",
+      "However, due to certain impractical regulations, restrictive policies and excessive taxation, poultry farmers across the state are being pushed into severe financial difficulties and mounting debt. The continued existence of this sector and the livelihoods of thousands of farming families are now under serious threat.",
+      "In this regard, the State Committee of the Kerala Poultry Farmers Association (KPFA) respectfully requests the Government to intervene urgently and take appropriate action on the following important issues to protect the broiler poultry farming sector and safeguard the interests of small and medium-scale poultry farmers."
+    ],
+    "points": [
+      {
+        "title": "Recognise Broiler Poultry Farming as an Agricultural Activity",
+        "paras": [
+          "The Government should officially recognise broiler poultry farming as a full-fledged Agricultural Activity and issue the necessary Government Order in this regard.",
+          "This recognition would enable poultry farmers to access benefits such as concessional agricultural electricity tariffs, low-interest agricultural loans, government subsidies and other financial assistance provided to the agricultural sector."
+        ]
+      },
+      {
+        "title": "Exempt Poultry Farm Sheds from Labour Cess and One-Time Tax",
+        "paras": [
+          "The construction of temporary poultry farm sheds for agricultural purposes currently attracts substantial financial burdens, including building taxes, One-Time Tax and Labour Cess imposed by local self-government institutions.",
+          "These charges place an additional and unreasonable financial burden on poultry farmers, particularly small and medium-scale operators.",
+          "Therefore, we request the Government to issue a special order granting complete exemption from such taxes and Labour Cess for poultry farm sheds constructed exclusively for agricultural purposes."
+        ]
+      },
+      {
+        "title": "Provide Relaxation from the Pollution Control Board's 500-Metre Distance Requirement",
+        "paras": [
+          "The 500-metre distance restriction imposed by the Kerala State Pollution Control Board on poultry farms with more than 5,000 birds, requiring them to maintain a minimum distance from residential areas, is highly impractical in a densely populated state like Kerala.",
+          "If this regulation is implemented strictly, a large number of existing poultry farms across the state may be forced to shut down. This would adversely affect poultry production, result in a sharp increase in chicken meat prices and lead to significant employment losses, severely impacting the state's poultry farming sector.",
+          "Considering Kerala's unique geographical conditions and high population density, we request the Government to provide necessary relaxation from the 500-metre distance requirement for farms that strictly comply with scientific waste management systems, hygiene standards and environmental protection measures.",
+          "Alternatively, the Government may formulate practical and scientifically appropriate alternative guidelines that take into account the specific geographical and demographic conditions of Kerala."
+        ]
+      }
+    ],
+    "conclusion": {
+      "title": "Conclusion",
+      "paras": [
+        "The above-mentioned issues are not merely individual concerns of poultry farmers. They are directly connected to Kerala's food security, employment protection, rural economy and the sustainability of the agricultural allied sector.",
+        "Therefore, on behalf of the State Committee of the Kerala Poultry Farmers Association, we earnestly request the Hon'ble Chief Minister to understand the serious difficulties faced by thousands of broiler poultry farmers across Kerala and take immediate and favourable decisions on the above demands.",
+        "We sincerely hope that the Government will take appropriate steps to protect the livelihoods of poultry farmers and prevent them from being pushed further into financial distress and debt.",
+        "We look forward to your favourable consideration and urgent intervention."
+      ]
+    },
+    "regards": "Yours faithfully,",
+    "placeLabel": "Place",
+    "dateLabel": "Date",
+    "copyLabel": "Copy to",
+    "copy": [
+      "The Hon'ble Minister for Animal Husbandry and Dairy Development, Government of Kerala.",
+      "The Hon'ble Minister for Local Self-Government, Government of Kerala."
+    ]
+  },
+  ml: {
+    "heading": "മലയാളം",
+    "fromLabel": "പ്രേഷിതൻ",
+    "toLabel": "സ്വീകർത്താവ്",
+    "to": [
+      "ബഹു. കേരള മുഖ്യമന്ത്രി,",
+      "മുഖ്യമന്ത്രിയുടെ ഓഫീസ്,",
+      "നോർത്ത് ബ്ലോക്ക്, ഗവൺമെന്റ് സെക്രട്ടേറിയറ്റ്,",
+      "തിരുവനന്തപുരം - 695001."
+    ],
+    "subjectLabel": "വിഷയം",
+    "salutation": "ബഹുമാനപ്പെട്ട സർ,",
+    "intro": [
+      "കേരളത്തിലെ കാർഷിക-അനുബന്ധ മേഖലയിൽ പതിനായിരക്കണക്കിന് കുടുംബങ്ങൾക്ക് നേരിട്ടും അല്ലാതെയും ഉപജീവനമാർഗ്ഗം നൽകുന്നതും, സംസ്ഥാനത്തിന്റെ ഭക്ഷ്യസുരക്ഷയിൽ നിർണ്ണായക പങ്ക് വഹിക്കുന്നതുമായ ഒരു പ്രധാന മേഖലയാണ് ബ്രോയിലർ കോഴി വളർത്തൽ. എന്നാൽ, നിലവിലെ ചില അശാസ്ത്രീയമായ നിയമങ്ങളും അമിതമായ നികുതി വ്യവസ്ഥകളും കാരണം സംസ്ഥാനത്തെ കോഴി കർഷകർ കടുത്ത സാമ്പത്തിക പ്രതിസന്ധിയിലേക്കും കടക്കെണിയിലേക്കും തള്ളിവിടപ്പെടുകയാണ്.",
+      "ഈ മേഖലയെ സംരക്ഷിക്കുന്നതിനായി താഴെ പറയുന്ന വിഷയങ്ങളിൽ അടിയന്തരമായി സർക്കാരിന്റെ ഇടപെടൽ ഉണ്ടാകണമെന്ന് കേരള പോൾട്രി ഫാർമേഴ്സ് അസോസിയേഷൻ സംസ്ഥാന കമ്മിറ്റി വിനീതമായി അഭ്യർത്ഥിക്കുന്നു:"
+    ],
+    "points": [
+      {
+        "title": "കാർഷിക മേഖലയിൽ ഉൾപ്പെടുത്തുക",
+        "paras": [
+          "ബ്രോയിലർ കോഴി വളർത്തലിനെ പൂർണ്ണമായും കാർഷിക പ്രവർത്തനമായി (Agricultural Activity) അംഗീകരിച്ച് ഉത്തരവ് പുറപ്പെടുവിക്കുക. ഇതിലൂടെ കർഷകർക്ക് ലഭിക്കേണ്ട കാർഷിക വൈദ്യുതി നിരക്ക് ഇളവുകൾ, കുറഞ്ഞ പലിശ നിരക്കിലുള്ള കാർഷിക വായ്പകൾ, മറ്റ് സർക്കാർ സബ്സിഡികൾ എന്നിവ ലഭ്യമാക്കുക."
+        ]
+      },
+      {
+        "title": "ലേബർ സെസ്, വൺ ടൈം ടാക്സ് എന്നിവ ഒഴിവാക്കുക",
+        "paras": [
+          "താൽക്കാലിക സ്വഭാവമുള്ള കോഴി ഫാം ഷെഡുകൾ നിർമ്മിക്കുമ്പോൾ തദ്ദേശ സ്വയംഭരണ സ്ഥാപനങ്ങൾ ഈടാക്കുന്ന അമിതമായ കെട്ടിട നികുതി, ഒറ്റത്തവണ നികുതി (One-Time Tax), ലേബർ സെസ് (Labour Cess) എന്നിവ കർഷകർക്ക് വലിയ സാമ്പത്തിക ബാധ്യതയാണ് ഉണ്ടാക്കുന്നത്. കാർഷിക ആവശ്യത്തിനായി നിർമ്മിക്കുന്ന ഇത്തരം ഷെഡുകളെ ഈ നികുതികളിൽ നിന്നും പൂർണ്ണമായും ഒഴിവാക്കി നൽകുക."
+        ]
+      },
+      {
+        "title": "മലിനീകരണ നിയന്ത്രണ ബോർഡിന്റെ 500 മീറ്റർ ദൂരപരിധി നിബന്ധന ഒഴിവാക്കുക",
+        "paras": [
+          "5000-ന് മുകളിൽ കോഴികളുള്ള ഫാമുകൾക്ക് ജനവാസ കേന്ദ്രങ്ങളിൽ നിന്നും 500 മീറ്റർ ദൂരപരിധി നിർബന്ധമാക്കിയ സംസ്ഥാന മലിനീകരണ നിയന്ത്രണ ബോർഡിന്റെ പുതിയ നിബന്ധന കേരളം പോലെ ജനസാന്ദ്രതയേറിയ ഒരു സംസ്ഥാനത്ത് ഒട്ടും പ്രായോഗികമല്ല. ഈ നിബന്ധന നടപ്പിലാക്കിയാൽ സംസ്ഥാനത്തെ ഭൂരിഭാഗം ഫാമുകളും അടച്ചുപൂട്ടേണ്ടി വരികയും, അത് കോഴിയിറച്ചി വില കുതിച്ചുയരുന്നതിനും തൊഴിൽ നഷ്ടത്തിനും കാരണമാവുകയും ചെയ്യും. ആയതിനാൽ, ശാസ്ത്രീയമായ മാലിന്യ സംസ്കരണവും ശുചിത്വവും ഉറപ്പുവരുത്തുന്ന ഫാമുകൾക്ക് ഈ 500 മീറ്റർ ദൂരപരിധി നിബന്ധനയിൽ അടിയന്തരമായി ഇളവ് അനുവദിക്കുക."
+        ]
+      }
+    ],
+    "conclusion": {
+      "title": null,
+      "paras": [
+        "മേൽപ്പറഞ്ഞ വിഷയങ്ങൾ അനുഭാവപൂർവ്വം പരിഗണിച്ച്, കേരളത്തിലെ ബ്രോയിലർ കോഴി കർഷകരെ ആത്മഹത്യയിൽ നിന്നും കടക്കെണിയിൽ നിന്നും രക്ഷിക്കുന്നതിനാവശ്യമായ അടിയന്തര തീരുമാനങ്ങൾ കൈക്കൊള്ളണമെന്ന് വിനീതമായി അഭ്യർത്ഥിക്കുന്നു."
+      ]
+    },
+    "regards": "വിശ്വസ്തതയോടെ,",
+    "placeLabel": "സ്ഥലം",
+    "dateLabel": "തീയതി",
+    "copyLabel": "പകർപ്പ്",
+    "copy": [
+      "ബഹു. മൃഗസംരക്ഷണ-ക്ഷീരവികസന വകുപ്പ് മന്ത്രി, കേരള സർക്കാർ.",
+      "ബഹു. തദ്ദേശ സ്വയംഭരണ വകുപ്പ് മന്ത്രി, കേരള സർക്കാർ."
+    ],
+    "mlSubject": "ബ്രോയിലർ കോഴി വളർത്തൽ മേഖല നേരിടുന്ന ഗുരുതരമായ പ്രതിസന്ധികൾ പരിഹരിക്കുന്നതിനും കർഷകരെ സംരക്ഷിക്കുന്നതിനും അടിയന്തര നടപടി സ്വീകരിക്കുന്നത് സംബന്ധിച്ച്."
+  }
+};
+
+LETTERS.en.fromLines = function (s) {
+  var a = [s.name, s.address, s.district.en + ' District', 'Mobile: ' + s.mobile];
+  if (s.email) a.push('Email: ' + s.email);
+  return a;
+};
+LETTERS.en.place = function (s) { return s.district.en; };
+LETTERS.ml.fromLines = function (s) {
+  var a = [s.name, s.address, s.district.ml + ' ജില്ല', 'മൊബൈൽ: ' + s.mobile];
+  if (s.email) a.push('ഇമെയിൽ: ' + s.email);
+  return a;
+};
+LETTERS.ml.place = function (s) { return s.district.ml; };
+
+function buildText(key, s) {
+  var L = LETTERS[key], o = [];
+  o.push(L.fromLabel + ':'); o = o.concat(L.fromLines(s)); o.push('');
+  o.push(L.toLabel + ':'); o = o.concat(L.to); o.push('');
+  o.push(L.subjectLabel + ': ' + (key === 'en' ? SUBJECT : L.mlSubject)); o.push('');
+  o.push(L.salutation); o.push('');
+  L.intro.forEach(function (p) { o.push(p); o.push(''); });
+  L.points.forEach(function (pt, i) {
+    o.push((i + 1) + '. ' + pt.title);
+    pt.paras.forEach(function (p) { o.push(p); o.push(''); });
+  });
+  if (L.conclusion.title) o.push(L.conclusion.title);
+  L.conclusion.paras.forEach(function (p) { o.push(p); o.push(''); });
+  o.push(L.regards); o.push(s.name); o.push(s.mobile);
+  if (s.email) o.push(s.email);
+  o.push('');
+  o.push(L.placeLabel + ': ' + L.place(s));
+  o.push(L.dateLabel + ': ' + s.date);
+  o.push('');
+  o.push(L.copyLabel + ':');
+  L.copy.forEach(function (c) { o.push('- ' + c); });
+  return o.join('\n');
+}
+
+function buildLetter(s) {
+  return buildText('en', s) + '\n\n' + new Array(41).join('=') + '\n\n' + buildText('ml', s);
+}
+
+function buildMailto(s) {
+  var body = buildLetter(s).replace(/\r?\n/g, '\r\n');
+  return 'mailto:' + TO +
+    '?cc=' + CC.join(',') +
+    '&subject=' + encodeURIComponent(SUBJECT) +
+    '&body=' + encodeURIComponent(body);
+}
+/*END_LETTER*/
+
   var DISTRICTS = [
     ['Thiruvananthapuram', 'തിരുവനന്തപുരം'],
     ['Kollam', 'കൊല്ലം'],
@@ -177,8 +358,10 @@
 
   var form = document.getElementById('form');
   var select = document.getElementById('district');
-  var btn = document.getElementById('send');
   var msg = document.getElementById('msg');
+  var result = document.getElementById('result');
+  var openMail = document.getElementById('openMail');
+  var currentText = '';
 
   DISTRICTS.forEach(function (d) {
     var o = document.createElement('option');
@@ -186,57 +369,6 @@
     o.textContent = d[1] + ' / ' + d[0];
     select.appendChild(o);
   });
-
-  var cfg = { googleClientId: '', requireEmail: false };
-  var credential = '';
-
-  function loadGoogle() {
-    var s = document.createElement('script');
-    s.src = 'https://accounts.google.com/gsi/client';
-    s.async = true;
-    s.onload = function () {
-      google.accounts.id.initialize({ client_id: cfg.googleClientId, callback: onCredential });
-      google.accounts.id.renderButton(document.getElementById('gsiButton'), { theme: 'outline', size: 'large', text: 'signin_with', width: 280 });
-    };
-    document.head.appendChild(s);
-  }
-
-  function onCredential(resp) {
-    credential = resp.credential;
-    var box = document.getElementById('gsiUser');
-    try {
-      var b64 = credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-      box.textContent = '\u2713 ' + JSON.parse(atob(b64)).email;
-    } catch (e) {
-      box.textContent = '\u2713 Signed in';
-    }
-    box.hidden = false;
-    document.getElementById('gsiButton').hidden = true;
-  }
-
-  function resetGoogle() {
-    credential = '';
-    document.getElementById('gsiUser').hidden = true;
-    document.getElementById('gsiButton').hidden = false;
-  }
-
-  function initEmail() {
-    if (cfg.googleClientId) {
-      document.getElementById('emailGoogle').hidden = false;
-      loadGoogle();
-    } else {
-      document.getElementById('emailManual').hidden = false;
-    }
-    if (cfg.requireEmail) {
-      Array.prototype.forEach.call(document.querySelectorAll('.optTag'), function (el) { el.style.display = 'none'; });
-    }
-  }
-
-  fetch('/api/config')
-    .then(function (r) { return r.json(); })
-    .then(function (c) { cfg = c; })
-    .catch(function () {})
-    .then(initEmail);
 
   function show(type, text) {
     msg.className = 'msg show ' + type;
@@ -251,15 +383,16 @@
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     msg.className = 'msg';
-
     var f = form.elements;
+    var email = f.email.value.trim();
     var checks = [
       [f.name, f.name.value.trim().length >= 2, 'പേര് നൽകുക / Please enter your name.'],
       [f.address, f.address.value.trim().length >= 5, 'വിലാസം നൽകുക / Please enter your address.'],
       [f.district, !!f.district.value, 'ജില്ല തിരഞ്ഞെടുക്കുക / Please select your district.'],
-      [f.mobile, /^[6-9]\d{9}$/.test(cleanMobile(f.mobile.value)), 'ശരിയായ 10 അക്ക മൊബൈൽ നമ്പർ നൽകുക / Enter a valid 10-digit mobile number.']
+      [f.mobile, /^[6-9]\d{9}$/.test(cleanMobile(f.mobile.value)), 'ശരിയായ 10 അക്ക മൊബൈൽ നമ്പർ നൽകുക / Enter a valid 10-digit mobile number.'],
+      [f.email, !email || /^[^\s@,;<>]+@[^\s@,;<>]+\.[^\s@,;<>]+$/.test(email), 'ശരിയായ ഇമെയിൽ നൽകുക / Please enter a valid email address.']
     ];
-    [f.name, f.address, f.district, f.mobile].forEach(function (el) { el.classList.remove('invalid'); });
+    [f.name, f.address, f.district, f.mobile, f.email].forEach(function (el) { el.classList.remove('invalid'); });
     for (var i = 0; i < checks.length; i++) {
       if (!checks[i][1]) {
         checks[i][0].classList.add('invalid');
@@ -269,51 +402,43 @@
       }
     }
 
-    if (cfg.requireEmail && !credential && !(f.email && f.email.value.trim())) {
-      show('err', cfg.googleClientId
-        ? 'Google ഉപയോഗിച്ച് സൈൻ ഇൻ ചെയ്യുക / Please sign in with Google.'
-        : 'ഇമെയിൽ നൽകുക / Please enter your email address.');
-      return;
+    var district = null;
+    DISTRICTS.forEach(function (d) { if (d[0] === f.district.value) district = { en: d[0], ml: d[1] }; });
+
+    var s = {
+      name: f.name.value.replace(/\s+/g, ' ').trim(),
+      address: f.address.value.split(/\r?\n/).map(function (x) { return x.replace(/\s+/g, ' ').trim(); }).filter(Boolean).join(', '),
+      district: district,
+      mobile: '+91 ' + cleanMobile(f.mobile.value),
+      email: email,
+      date: new Date().toLocaleDateString('en-GB', { timeZone: 'Asia/Kolkata' })
+    };
+
+    currentText = buildLetter(s);
+    openMail.href = buildMailto(s);
+    document.getElementById('preview').textContent = currentText;
+    document.getElementById('meta').textContent =
+      'To: ' + TO + '\nCC: ' + CC.join(', ') + '\nSubject: ' + SUBJECT;
+    result.hidden = false;
+    result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  document.getElementById('copyLetter').addEventListener('click', function () {
+    var btn = this, label = btn.textContent;
+    function done() {
+      btn.textContent = 'കോപ്പി ചെയ്തു ✓ · Copied ✓';
+      setTimeout(function () { btn.textContent = label; }, 2500);
     }
-
-    btn.disabled = true;
-    var original = btn.textContent;
-    btn.textContent = 'അയയ്ക്കുന്നു… · Sending…';
-
-    fetch('/api/send', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: f.name.value,
-        address: f.address.value,
-        district: f.district.value,
-        mobile: f.mobile.value,
-        email: f.email ? f.email.value : '',
-        credential: credential,
-        website: f.website.value
-      })
-    })
-      .then(function (r) {
-        return r.json().catch(function () { return { ok: false }; }).then(function (data) {
-          return { status: r.status, data: data };
-        });
-      })
-      .then(function (res) {
-        if (res.data && res.data.ok) {
-          show('ok', 'നിവേദനം അയച്ചു. നന്ദി! / Your petition has been sent. Thank you!');
-          form.reset();
-        } else {
-          if (res.data && /Google sign-in/.test(res.data.error || '')) resetGoogle();
-          show('err', (res.data && res.data.error) || 'അയയ്ക്കാൻ കഴിഞ്ഞില്ല. വീണ്ടും ശ്രമിക്കുക / Could not send. Please try again.');
-        }
-      })
-      .catch(function () {
-        show('err', 'നെറ്റ്‌വർക്ക് പിശക്. വീണ്ടും ശ്രമിക്കുക / Network error. Please try again.');
-      })
-      .then(function () {
-        btn.disabled = false;
-        btn.textContent = original;
-      });
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = currentText; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); done(); } catch (err) {}
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(currentText).then(done, fallback);
+    } else { fallback(); }
   });
 })();
 </script>
