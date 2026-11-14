@@ -98,11 +98,11 @@
   a.btn:hover { background: var(--brand-dark); }
   button.secondary { background: transparent; color: var(--brand); border: 2px solid var(--brand); margin-top: 12px; }
   button.secondary:hover { background: var(--ok-bg); }
-  .hint { font-size: .93rem; margin: 0 0 4px; }
-  .meta { margin-top: 16px; font-size: .85rem; color: var(--muted); white-space: pre-line; word-break: break-word; }
+  .hint { font-size: .93rem; margin: 12px 0 0; text-align: center; }
+  .meta { margin-top: 4px; font-size: .88rem; color: var(--muted); white-space: pre-line; word-break: break-word; }
   details { margin-top: 14px; }
   summary { cursor: pointer; font-weight: 600; font-size: .95rem; }
-  pre#preview { white-space: pre-wrap; word-break: break-word; font-family: inherit; font-size: .85rem; max-height: 320px; overflow: auto; border: 1px solid var(--line); border-radius: 10px; padding: 10px; margin: 10px 0 0; }
+  pre#preview { white-space: pre-wrap; word-break: break-word; font-family: inherit; font-size: .9rem; border: 1px solid var(--line); border-radius: 10px; padding: 12px; margin: 12px 0 0; }
   [hidden] { display: none !important; }
   footer { text-align: center; color: var(--muted); font-size: .8rem; padding: 4px 0 20px; }
 </style>
@@ -151,16 +151,12 @@
   </form>
 
   <section id="result" class="card" hidden>
-    <h2>ഇമെയിൽ തയ്യാർ · Email ready</h2>
-    <p class="hint">താഴെയുള്ള ബട്ടൺ അമർത്തിയാൽ നിങ്ങളുടെ ഇമെയിൽ ആപ്പ് തുറക്കും. അവിടെ <b>Send</b> അമർത്തുക.<br>
-      Tap the button to open your email app, then press <b>Send</b> there. It is sent from your own email address.</p>
-    <a id="openMail" class="btn" href="#">ഇമെയിൽ ആപ്പ് തുറക്കുക · Open email app</a>
-    <button id="copyLetter" type="button" class="secondary">കത്ത് കോപ്പി ചെയ്യുക · Copy letter</button>
+    <h2>നിങ്ങളുടെ ഇമെയിൽ · Your email</h2>
     <div id="meta" class="meta"></div>
-    <details>
-      <summary>കത്ത് കാണുക · Preview letter</summary>
-      <pre id="preview"></pre>
-    </details>
+    <pre id="preview"></pre>
+    <a id="openMail" class="btn" href="#">ഇമെയിൽ അയക്കുക · Send email</a>
+    <p class="hint">ബട്ടൺ അമർത്തുമ്പോൾ ഈ കത്തോടു കൂടി നിങ്ങളുടെ ഇമെയിൽ ആപ്പ് തുറക്കും. അവിടെ <b>Send</b> അമർത്തുക.<br>
+      Your email app opens with this letter ready. Just press <b>Send</b> there.</p>
   </section>
 
   <footer>നിങ്ങളുടെ ഇമെയിൽ ആപ്പിൽ നിന്ന് നിങ്ങളുടെ സ്വന്തം വിലാസത്തിൽ നിന്ന് അയയ്ക്കുന്നു · Sent from your own email app and address.</footer>
@@ -361,7 +357,6 @@ function buildMailto(s) {
   var msg = document.getElementById('msg');
   var result = document.getElementById('result');
   var openMail = document.getElementById('openMail');
-  var currentText = '';
 
   DISTRICTS.forEach(function (d) {
     var o = document.createElement('option');
@@ -414,31 +409,12 @@ function buildMailto(s) {
       date: new Date().toLocaleDateString('en-GB', { timeZone: 'Asia/Kolkata' })
     };
 
-    currentText = buildLetter(s);
     openMail.href = buildMailto(s);
-    document.getElementById('preview').textContent = currentText;
+    document.getElementById('preview').textContent = buildLetter(s);
     document.getElementById('meta').textContent =
       'To: ' + TO + '\nCC: ' + CC.join(', ') + '\nSubject: ' + SUBJECT;
     result.hidden = false;
     result.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-
-  document.getElementById('copyLetter').addEventListener('click', function () {
-    var btn = this, label = btn.textContent;
-    function done() {
-      btn.textContent = 'കോപ്പി ചെയ്തു ✓ · Copied ✓';
-      setTimeout(function () { btn.textContent = label; }, 2500);
-    }
-    function fallback() {
-      var ta = document.createElement('textarea');
-      ta.value = currentText; ta.style.position = 'fixed'; ta.style.opacity = '0';
-      document.body.appendChild(ta); ta.select();
-      try { document.execCommand('copy'); done(); } catch (err) {}
-      document.body.removeChild(ta);
-    }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(currentText).then(done, fallback);
-    } else { fallback(); }
   });
 })();
 </script>
